@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "902869941282",
+    "project_id": "takenotes-d3868",
+    "storage_bucket": "takenotes-d3868.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902869941282:android:96b47c3d3191568adf1e7b",
+        "android_client_info": {
+          "package_name": "com.shashwatssp.takenotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902869941282-r6fifgg3736q5gif97a2ksl51964tdc0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5XEHjZKkTQuOF6Xj0uew_RpFxXIusZgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "902869941282-r6fifgg3736q5gif97a2ksl51964tdc0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "902869941282-absse8j8hovt1ggjk8ril7l6cf2vfii9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shashwatssp.takenotes"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
