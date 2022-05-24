@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
-
 import 'package:takenotes/constants/routes.dart';
+import 'package:takenotes/services/auth/auth_exceptions.dart';
+import 'package:takenotes/services/auth/auth_service.dart';
+import 'package:takenotes/utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -60,21 +60,34 @@ class _LoginViewState extends State<LoginView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
+                await AuthService.firebase().logIn(
                   email: email,
                   password: password,
                 );
-
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  notesRoute,
-                  (route) => false,
-                );
-              } on FirebaseAuthException catch (e) {
-                if (e.code == 'user-not-found') {
-                  await showErrorDialogue(context, 'User not found');
-                } else if (e.code == 'wrong-password') {
-                  await showErrorDialogue(context, 'Wrong Password');
+                final user = AuthService.firebase().currentUser;
+                if (user?.isEmailVerified ?? false) {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    notesRoute,
+                    (route) => false,
+                  );
+                } else {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    verifyEmailRoute,
+                    (route) => false,
+                  );
                 }
+              } on UserNotFoundAuthException {
+                await showErrorDialogue(
+                  context,
+                  'User not found',
+                );
+              } on WrongPasswordAuthException {
+                await showErrorDialogue(context, 'Wrong Credentials');
+              } on GenericAuthException {
+                await showErrorDialogue(
+                  context,
+                  'Authentication error',
+                );
               }
             },
             child: const Text('Login'),
@@ -92,21 +105,4 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
-}
-
-Future<void> showErrorDialogue(
-  BuildContext context,
-  String text,
-) {
-  return showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-          title: const Text('An error occured'),
-          content: Text(text),
-          actions: [
-            TextButton(onPressed: () {}, child: const Text('OK')),
-          ]);
-    },
-  );
 }
